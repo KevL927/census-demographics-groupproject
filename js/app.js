@@ -1,35 +1,39 @@
-$(document).ready(function() {
+$( document ).ready(function() {
 
-    var states = ['AL', "AK", "three", "AZ", "AR", "CA", "seven", "CO", "CT", "DE", "DC", "FL", "GA", "Fourteen", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "Forty-three", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "Fifty-two", "WA", "WV", "WI", "WY"];
+  var $template = $('<option>');
 
-    $('.census-form').submit(function(event) {
-        event.preventDefault();
-        var searchTerm = $('.city-box').val();
-        searchTerm = states.indexOf(searchTerm) + 1;
-        searchTerm = searchTerm.toString();
-        if (searchTerm < 10) {
-            searchTerm = (('0' + searchTerm).slice(-2))
-        }
+  var states = [null,'AL','AK',null,'AZ','AR','CA',null,'CO','CT','DE','DC','FL','GA',null,'HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA',null,'RI','SC','SD','TN','TX','UT','VT','VA',null,'WA','WV','WI','WY'];
 
-        getRequest(searchTerm);
-    })
+  states.forEach(function(state,index){
+    if(state === null) { return; }
+    var $templateClone = $template.clone();
 
-    function getRequest(searchTerm) {
-        var params = {
-            key: '761f74a5270b2aa6a34a35e45d54f4fcc3af92c0'
-        }
-        $.getJSON('http://api.census.gov/data/2010/sf1?get=P0010001&for=state:' + searchTerm, params,
-            function(data) {
+      $templateClone.val(index)
+                    .text(state);
 
-                console.log(data[1][0]);
-                $("#numOfpeople").css("font-size" ,'4em').text(data[1][0])
-            }
+      $('.state-list').append($templateClone)
+  });
 
-        )
+  $('.census-form').submit(function(event) {
+    event.preventDefault();
+    var searchTerm = $('.state-list').val();
+    searchTerm = '0' + searchTerm
+    getRequest(searchTerm);
+  })
 
-    }
+  function getRequest(searchTerm) {
 
+    var params = {
+      'key': '761f74a5270b2aa6a34a35e45d54f4fcc3af92c0',
+      'for': 'state:'+ searchTerm,
+      'get': 'P0010001'
+      }
 
-
-  
+    $.getJSON('http://api.census.gov/data/2010/sf1', params,
+      function(data) {
+      var population = data[1][0];
+      $("#num-of-people").text(population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+    });
+    
+  }
 });
