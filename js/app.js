@@ -24,7 +24,7 @@ $( document ).ready(function() {
   })
 
   function setBackground (statesArrayIndex) {
-    $('body').css('background-image', 'url(images/' + states[+statesArrayIndex.slice(1)] + '.jpg)');
+    $('body').css('background-image', 'url(images/' + states[+statesArrayIndex.slice(1)] + '.jpg)' );
   }
 
 /* Code representation:
