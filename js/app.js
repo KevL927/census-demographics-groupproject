@@ -16,12 +16,16 @@ $( document ).ready(function() {
 
   $('.census-form').submit(function(event) {
     event.preventDefault();
-    var currentGetCode = 'NAME',
-    searchTerm = $('.state-list').val();
+    var searchTerm = $('.state-list').val();
 
     searchTerm = '0' + searchTerm;
-    getRequest(searchTerm, currentGetCode);
+    setBackground(searchTerm);
+    getRequest(searchTerm);
   })
+
+  function setBackground (statesArrayIndex) {
+    $('body').css('background-image', 'url(images/' + states[+statesArrayIndex.slice(1)] + '.jpg)');
+  }
 
 /* Code representation:
 geography = 'NAME', totalPopulation = 'P0010001', whitePop = 'P0100003', blackOrAfricanAmericanPop = 'P0100004', americanIndianAndAlaskaNativePop = 'P0100005', AsianPop = 'P0100006', nativeHawaiianAndOtherPacificIslanderPop = 'P0100007', malePop = 'P012A002', femalePop = 'P012A026', otherRace = 'P0100008', totalHousingUnits = 'H00010001', totalOccupiedHousingUnits = 'H0100001' */
@@ -34,20 +38,20 @@ geography = 'NAME', totalPopulation = 'P0010001', whitePop = 'P0100003', blackOr
     var params = {
       'key': '761f74a5270b2aa6a34a35e45d54f4fcc3af92c0',
       'for': 'state:'+ searchTerm,
-      'get': currentGetCode,
+      'get': 'P0010001'
       }
 
     $.getJSON('http://api.census.gov/data/2010/sf1', params,
       function(data) {
       var population = data[1][0];
-      console.log(population);
-      $("#num-of-people").append(population)
-      // $("#num-of-people").text(population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+      $("#num-of-people").text(population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
     });
 
-    if(getCodeLength > -1) {
-      getCodeLength--;
-      return getRequest(searchTerm, getCode.shift());
-    }
+
+    // Remove comments to enable other numbers
+    // if(getCodeLength > -1) {
+    //   getCodeLength--;
+    //   return getRequest(searchTerm, getCode.shift());
+    // }
   }
 });
