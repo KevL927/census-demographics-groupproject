@@ -1,14 +1,15 @@
-body {
+#container {
     background-image: url(https://newevolutiondesigns.com/images/freebies/city-wallpaper-46.jpg);
     background-repeat: no-repeat;
+    background-size: 100%;
     font-family: 'Orbitron', sans-serif;
 }
 
-form {
-	font-size: 3em;
+.census-form {
+	font-size: 2em;
 	padding: 1em;
 }
 
 #num-of-people {
-  font-size: 4em;
+  font-size: 2em;
 }

@@ -17,20 +17,20 @@ $( document ).ready(function() {
   $('.census-form').submit(function(event) {
     event.preventDefault();
     var searchTerm = $('.state-list').val();
-
-    searchTerm = '0' + searchTerm;
     setBackground(searchTerm);
+    searchTerm = '0' + searchTerm;
     getRequest(searchTerm);
   })
 
   function setBackground (statesArrayIndex) {
-    $('body').css('background-image', 'url(images/' + states[+statesArrayIndex.slice(1)] + '.jpg)');
+    $('#background').css('background-image', 'url(images/' + states[+statesArrayIndex] + '.jpg)' );
   }
 
 /* Code representation:
 geography = 'NAME', totalPopulation = 'P0010001', whitePop = 'P0100003', blackOrAfricanAmericanPop = 'P0100004', americanIndianAndAlaskaNativePop = 'P0100005', AsianPop = 'P0100006', nativeHawaiianAndOtherPacificIslanderPop = 'P0100007', malePop = 'P012A002', femalePop = 'P012A026', otherRace = 'P0100008', totalHousingUnits = 'H00010001', totalOccupiedHousingUnits = 'H0100001' */
 
-  var getCode = ['P0010001','P0100003','P0100004','P0100005','P0100006','P0100007','P012A002','P012A026','P0100008','H00010001','H0100001'],
+  var getCode = ['NAME','P0010001','P012A026','P012A002','P0100006'],
+  numberToDisplay = ['#state','#population-total','#female-total','#male-total','#asian-total']
       getCodeLength = getCode.length-1;
 
   function getRequest(searchTerm, currentGetCode) {
@@ -39,8 +39,12 @@ geography = 'NAME', totalPopulation = 'P0010001', whitePop = 'P0100003', blackOr
 
     $.getJSON('http://api.census.gov/data/2010/sf1', params,
       function(data) {
-      var totalPopulation = data[1][0];
-      $("#num-of-people").text(population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+      var population = data[1];
+
+      population.forEach(function(item,index){
+      $(numberToDisplay[index]).text(population[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+    });
+
     });
   }
 });
