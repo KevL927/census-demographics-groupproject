@@ -3,12 +3,18 @@ body {
     background-repeat: no-repeat;
     background-size: 100%;
     font-family: 'Orbitron', sans-serif;
+   
 }
 
 form {
-	font-size: 3em;
+	font-size: 2em;
 	padding: 1em;
+	background-color:white;
+	
 }
+
+
+
 
 #num-of-people {
   font-size: 2em;
