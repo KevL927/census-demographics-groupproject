@@ -35,23 +35,12 @@ geography = 'NAME', totalPopulation = 'P0010001', whitePop = 'P0100003', blackOr
 
   function getRequest(searchTerm, currentGetCode) {
 
-    var params = {
-      'key': '761f74a5270b2aa6a34a35e45d54f4fcc3af92c0',
-      'for': 'state:'+ searchTerm,
-      'get': 'P0010001'
-      }
+    var params = 'key=761f74a5270b2aa6a34a35e45d54f4fcc3af92c0&' + 'for=state:' + searchTerm + '&get=' + getCode.join('&');
 
     $.getJSON('http://api.census.gov/data/2010/sf1', params,
       function(data) {
-      var population = data[1][0];
+      var totalPopulation = data[1][0];
       $("#num-of-people").text(population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
     });
-
-
-    // Remove comments to enable other numbers
-    // if(getCodeLength > -1) {
-    //   getCodeLength--;
-    //   return getRequest(searchTerm, getCode.shift());
-    // }
   }
 });
